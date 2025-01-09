@@ -12,6 +12,7 @@ namespace Atlas
         public float ScaleMultiplier = 1.0f;
         public List<MapGroupSettings> MapGroups = [];
         public string GroupNameInput = string.Empty;
+        public bool DrawWhenForeground = true;
 
         public AtlasSettings()
         {
