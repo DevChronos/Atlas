@@ -10,6 +10,7 @@ namespace Atlas
     using System.IO;
     using System.Numerics;
     using System.Text;
+    using System.Xml;
 
     public sealed class Atlas : PCore<AtlasSettings>
     {
@@ -32,12 +33,15 @@ namespace Atlas
         public override void SaveSettings()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(this.SettingPathname));
-            var settingsData = JsonConvert.SerializeObject(this.Settings, Formatting.Indented);
+            var settingsData = JsonConvert.SerializeObject(this.Settings, Newtonsoft.Json.Formatting.Indented);
             File.WriteAllText(this.SettingPathname, settingsData);
         }
 
         public override void DrawSettings()
         {
+            ImGui.Checkbox($"##DrawWhenForeground", ref Settings.DrawWhenForeground);
+            ImGui.SameLine();
+            ImGui.Text("Hide Atlas when game is in the background");
             ImGui.Checkbox($"##HideCompletedMaps", ref Settings.HideCompletedMaps);
             ImGui.SameLine();
             ImGui.Text($"Hide Completed Maps");
@@ -103,6 +107,11 @@ namespace Atlas
 
             var drawList = ImGui.GetBackgroundDrawList();
             var atlasNodes = GetAtlasNodes();
+
+            if (Settings.DrawWhenForeground && !Core.Process.Foreground)
+            {
+                return;
+            }
 
             foreach (var atlasNode in atlasNodes)
             {
