@@ -71,6 +71,10 @@ namespace Atlas
             ImGui.SameLine();
             ImGui.Text($"Move Y Axis");
 
+            ImGui.Checkbox($"##DrawLinesToCitadels", ref Settings.DrawLinesToCitadels);
+            ImGui.SameLine();
+            ImGui.Text($"Draw Lines to Citadels");
+
             ImGui.InputText($"##MapGroupName", ref Settings.GroupNameInput, 256);
             ImGui.SameLine();
             if (ImGui.Button("Add new map group"))
@@ -165,6 +169,11 @@ namespace Atlas
 
                 drawList.AddRectFilled(bgPos, bgPos + bgSize, ImGuiHelper.Color(backgroundColor));
                 drawList.AddText(drawPosition, ImGuiHelper.Color(fontColor), mapName);
+
+                if (Settings.DrawLinesToCitadels && mapName.EndsWith("Citadel")) {
+                    drawList.AddLine(playerlocation, drawPosition, 0xFF0000FF);
+                    continue;
+                }
 
                 if (!string.IsNullOrWhiteSpace(Search) && mapName.Contains(Search, StringComparison.OrdinalIgnoreCase))
                     drawList.AddLine(playerlocation, drawPosition, 0xFFFFFFFF);
