@@ -14,6 +14,7 @@ namespace Atlas
         public float PositionOffsetY = 0.0f;
         public List<MapGroupSettings> MapGroups = [];
         public string GroupNameInput = string.Empty;
+        public bool DrawLinesToCitadels = true;
 
         public bool TrackAbyssMaps = false;
         public bool TrackAbyssRevealedOnly = true;
